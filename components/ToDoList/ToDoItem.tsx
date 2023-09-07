@@ -10,7 +10,7 @@ import { UseToDoList } from '@/hooks/useToDoList';
 import { Item } from '@/types/ToDoList';
 import Actions from './Actions';
 
-interface Props extends Omit<UseToDoList, 'todoList' | 'addToDo'> {
+interface Props extends Omit<UseToDoList, 'toDoList' | 'addToDo'> {
   item: Item;
 }
 

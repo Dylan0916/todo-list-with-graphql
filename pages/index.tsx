@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import { Card, CardContent } from '@mui/material';
 
-import TodoHeader from '@/components/TodoHeader';
-import TodoList from '@/components/TodoList';
+import ToDoHeader from '@/components/ToDoHeader';
+import ToDoList from '@/components/ToDoList';
 import { initializeApollo } from '@/apollo/client';
 import useToDoList from '@/hooks/useToDoList';
 
@@ -20,7 +20,7 @@ const ViewerQuery = gql`
 
 const Index = () => {
   const {
-    todoList,
+    toDoList,
     addToDo,
     editToDo,
     deleteToDo,
@@ -39,10 +39,10 @@ const Index = () => {
         transform: 'translate(-50%, -50%)',
       }}
     >
-      <TodoHeader addToDo={addToDo} />
+      <ToDoHeader addToDo={addToDo} />
       <CardContent sx={{ '&:last-child': { p: [1, 2] } }}>
-        <TodoList
-          todoList={todoList}
+        <ToDoList
+          toDoList={toDoList}
           editToDo={editToDo}
           deleteToDo={deleteToDo}
           toggleFinished={toggleFinished}

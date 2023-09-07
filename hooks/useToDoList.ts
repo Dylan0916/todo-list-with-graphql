@@ -9,7 +9,7 @@ const data = [
 ];
 
 export interface UseToDoList {
-  todoList: Item[];
+  toDoList: Item[];
   addToDo: (text: string) => void;
   editToDo: (id: number, text: string) => void;
   deleteToDo: (id: number) => void;
@@ -18,13 +18,13 @@ export interface UseToDoList {
 }
 
 export default function useToDoList() {
-  const [todoList, setTodoList] = useState<Item[]>(data);
+  const [toDoList, setToDoList] = useState<Item[]>(data);
   const idCounterRef = useRef(data.length);
 
   const addToDo = useCallback((text: string) => {
     if (text.trim().length === 0) return;
 
-    setTodoList((prev) => {
+    setToDoList((prev) => {
       return prev.concat({
         id: idCounterRef.current,
         text,
@@ -36,17 +36,17 @@ export default function useToDoList() {
   }, []);
 
   const editToDo = useCallback((id: number, text: string) => {
-    setTodoList((prev) => {
+    setToDoList((prev) => {
       return prev.map((item) => (item.id === id ? { ...item, text } : item));
     });
   }, []);
 
   const deleteToDo = useCallback((id: number) => {
-    setTodoList((prev) => prev.filter((item) => item.id !== id));
+    setToDoList((prev) => prev.filter((item) => item.id !== id));
   }, []);
 
   const toggleFinished = useCallback((id: number) => {
-    setTodoList((prev) => {
+    setToDoList((prev) => {
       return prev.map((item) =>
         item.id === id ? { ...item, isFinished: !item.isFinished } : item
       );
@@ -54,7 +54,7 @@ export default function useToDoList() {
   }, []);
 
   const toggleEditing = useCallback((id: number) => {
-    setTodoList((prev) => {
+    setToDoList((prev) => {
       return prev.map((item) =>
         item.id === id ? { ...item, isEditing: !item.isEditing } : item
       );
@@ -62,7 +62,7 @@ export default function useToDoList() {
   }, []);
 
   return {
-    todoList,
+    toDoList,
     addToDo,
     editToDo,
     deleteToDo,

@@ -6,8 +6,8 @@ import ToDoItem from './ToDoItem';
 
 type Props = Omit<UseToDoList, 'addToDo'>;
 
-const TodoList: FC<Props> = ({
-  todoList,
+const ToDoList: FC<Props> = ({
+  toDoList,
   editToDo,
   deleteToDo,
   toggleFinished,
@@ -17,7 +17,7 @@ const TodoList: FC<Props> = ({
     <>
       <Typography textAlign="center">LIST OF WORKS TODO:</Typography>
       <List>
-        {todoList.map((item) => (
+        {toDoList.map((item) => (
           <ToDoItem
             key={item.id}
             item={item}
@@ -32,4 +32,4 @@ const TodoList: FC<Props> = ({
   );
 };
 
-export default TodoList;
+export default ToDoList;
