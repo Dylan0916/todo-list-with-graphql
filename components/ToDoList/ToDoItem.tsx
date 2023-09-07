@@ -40,10 +40,10 @@ const ToDoItem: FC<Props> = ({
         />
       }
       disablePadding
-      sx={{ pt: 1, pb: 1 }}
+      sx={{ pt: 1, pb: 1, '&>.MuiListItemButton-root': { pr: 20 } }}
     >
       <ListItemButton
-        sx={{ backgroundColor: '#f4f4f4', borderRadius: '3px', pr: 20 }}
+        sx={{ backgroundColor: '#f4f4f4', borderRadius: '3px' }}
         onClick={() => toggleFinished(item.id)}
       >
         {item.isEditing ? (
