@@ -1,12 +1,17 @@
-import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../apollo/client'
+import { ApolloProvider } from '@apollo/client';
+import { GlobalStyles } from '@mui/material';
+
+import { useApollo } from '@/apollo/client';
 
 export default function App({ Component, pageProps }) {
-  const apolloClient = useApollo(pageProps.initialApolloState)
+  const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
     <ApolloProvider client={apolloClient}>
+      <GlobalStyles
+        styles={{ body: { margin: 0, backgroundColor: '#e0e0e0' } }}
+      />
       <Component {...pageProps} />
     </ApolloProvider>
-  )
+  );
 }
