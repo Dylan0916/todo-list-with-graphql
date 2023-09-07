@@ -8,9 +8,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <GlobalStyles
-        styles={{ body: { margin: 0, backgroundColor: '#e0e0e0' } }}
-      />
+      <GlobalStyles styles={{ body: { backgroundColor: '#e0e0e0' } }} />
       <Component {...pageProps} />
     </ApolloProvider>
   );

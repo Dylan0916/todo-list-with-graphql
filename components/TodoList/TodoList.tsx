@@ -1,43 +1,31 @@
-import {
-  Typography,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from '@mui/material';
+import { FC } from 'react';
+import { Typography, List } from '@mui/material';
 
-import Actions from './Actions';
+import { UseToDoList } from '@/hooks/useToDoList';
+import ToDoItem from './ToDoItem';
 
-const data = [
-  { id: 0, name: 'TODO 1', isFinished: false },
-  { id: 1, name: 'TODO 2', isFinished: true },
-  { id: 2, name: 'TODO 3', isFinished: false },
-];
+type Props = Omit<UseToDoList, 'addToDo'>;
 
-const TodoList = () => {
+const TodoList: FC<Props> = ({
+  todoList,
+  editToDo,
+  deleteToDo,
+  toggleFinished,
+  toggleEditing,
+}) => {
   return (
     <>
       <Typography textAlign="center">LIST OF WORKS TODO:</Typography>
       <List>
-        {data.map((datum) => (
-          <ListItem
-            key={datum.id}
-            secondaryAction={<Actions isFinished={datum.isFinished} />}
-            disablePadding
-            sx={{ pt: 1, pb: 1 }}
-          >
-            <ListItemButton
-              sx={{ backgroundColor: '#f4f4f4', borderRadius: '3px' }}
-            >
-              <ListItemText
-                primary={datum.name}
-                sx={{
-                  textDecoration: datum.isFinished ? 'line-through' : 'none',
-                  opacity: datum.isFinished ? 0.4 : 1,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
+        {todoList.map((item) => (
+          <ToDoItem
+            key={item.id}
+            item={item}
+            editToDo={editToDo}
+            deleteToDo={deleteToDo}
+            toggleFinished={toggleFinished}
+            toggleEditing={toggleEditing}
+          />
         ))}
       </List>
     </>
