@@ -1,4 +1,4 @@
-import { Card } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 
 import ToDoHeader from '@/components/ToDoHeader';
 import ToDoList from '@/components/ToDoList';
@@ -8,6 +8,22 @@ import { ToDoListQuery } from '@/apollo/queries';
 
 const Index = () => {
   const { toDoList, error, loading } = useToDoList();
+
+  if (loading) {
+    return (
+      <Typography variant="h1" textAlign="center">
+        Loading...
+      </Typography>
+    );
+  }
+
+  if (error) {
+    return (
+      <Typography variant="h1" textAlign="center">
+        Something went wrong!
+      </Typography>
+    );
+  }
 
   return (
     <Card
