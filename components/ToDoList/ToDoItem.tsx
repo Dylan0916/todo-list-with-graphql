@@ -61,6 +61,7 @@ const ToDoItem: FC<Props> = ({ item }) => {
             sx={{
               textDecoration: item.isFinished ? 'line-through' : 'none',
               opacity: item.isFinished ? 0.4 : 1,
+              overflowX: 'auto',
             }}
           />
         )}

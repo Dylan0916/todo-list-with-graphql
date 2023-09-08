@@ -30,10 +30,7 @@ const Index = () => {
       sx={{
         width: '100%',
         maxWidth: 1024,
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
+        margin: 'auto',
       }}
     >
       <ToDoHeader />
