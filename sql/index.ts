@@ -16,7 +16,6 @@ if (Sequelize) {
     storage: ':memory:',
   });
 
-  // sequelize.addModels([__dirname + './models/*.model.ts']);
   sequelize.addModels([ToDoList]);
 }
 
