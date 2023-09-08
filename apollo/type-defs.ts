@@ -1,13 +1,25 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client';
 
 export const typeDefs = gql`
-  type User {
+  input EditToDoInput {
     id: ID!
-    name: String!
-    status: String!
+    text: String!
+  }
+
+  type ToDoItem {
+    id: ID!
+    text: String!
+    isFinished: Boolean
   }
 
   type Query {
-    viewer: User
+    toDoList: [ToDoItem]
   }
-`
+
+  type Mutation {
+    addToDo(text: String!): [ToDoItem]!
+    editToDo(input: EditToDoInput!): [ToDoItem]!
+    deleteToDo(id: ID!): [ToDoItem]!
+    toggleFinished(id: ID!): [ToDoItem]!
+  }
+`;

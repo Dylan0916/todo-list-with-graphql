@@ -1,13 +1,10 @@
-import { KeyboardEvent, FC, useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
 import { TextField, Box, Button } from '@mui/material';
 
-import { UseToDoList } from '@/hooks/useToDoList';
+import useToDoList from '@/hooks/useToDoList';
 
-interface Props {
-  addToDo: UseToDoList['addToDo'];
-}
-
-const AddItemInput: FC<Props> = ({ addToDo }) => {
+const AddItemInput = () => {
+  const { addToDo } = useToDoList();
   const [inputValue, setInputValue] = useState('');
 
   const handleSubmitValue = () => {

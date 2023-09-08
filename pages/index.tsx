@@ -1,32 +1,13 @@
-import gql from 'graphql-tag';
-import Link from 'next/link';
-import { useQuery } from '@apollo/client';
 import { Card } from '@mui/material';
 
 import ToDoHeader from '@/components/ToDoHeader';
 import ToDoList from '@/components/ToDoList';
 import { initializeApollo } from '@/apollo/client';
 import useToDoList from '@/hooks/useToDoList';
-
-const ViewerQuery = gql`
-  query ViewerQuery {
-    viewer {
-      id
-      name
-      status
-    }
-  }
-`;
+import { ToDoListQuery } from '@/apollo/queries';
 
 const Index = () => {
-  const {
-    toDoList,
-    addToDo,
-    editToDo,
-    deleteToDo,
-    toggleFinished,
-    toggleEditing,
-  } = useToDoList();
+  const { toDoList, error, loading } = useToDoList();
 
   return (
     <Card
@@ -39,35 +20,17 @@ const Index = () => {
         transform: 'translate(-50%, -50%)',
       }}
     >
-      <ToDoHeader addToDo={addToDo} />
-      <ToDoList
-        toDoList={toDoList}
-        editToDo={editToDo}
-        deleteToDo={deleteToDo}
-        toggleFinished={toggleFinished}
-        toggleEditing={toggleEditing}
-      />
+      <ToDoHeader />
+      <ToDoList toDoList={toDoList} />
     </Card>
   );
 };
-// const Index = () => {
-//   const {
-//     data: { viewer },
-//   } = useQuery(ViewerQuery);
-
-//   return (
-//     <div>
-//       You're signed in as {viewer.name} and you're {viewer.status} goto{' '}
-//       <Link href="/about">static</Link> page.
-//     </div>
-//   );
-// };
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo();
 
   await apolloClient.query({
-    query: ViewerQuery,
+    query: ToDoListQuery,
   });
 
   return {

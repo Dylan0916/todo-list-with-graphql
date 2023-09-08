@@ -1,7 +1,8 @@
-import { ApolloServer } from '@apollo/server'
-import { startServerAndCreateNextHandler } from '@as-integrations/next'
-import { schema } from '../../apollo/schema'
+import { ApolloServer } from '@apollo/server';
+import { startServerAndCreateNextHandler } from '@as-integrations/next';
 
-const apolloServer = new ApolloServer({ schema })
+import { schema } from '@/apollo/schema';
 
-export default startServerAndCreateNextHandler(apolloServer)
+const apolloServer = new ApolloServer({ schema });
+
+export default startServerAndCreateNextHandler(apolloServer);

@@ -1,72 +1,96 @@
-import { useState, useRef, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useQuery, useMutation, ApolloCache } from '@apollo/client';
 
+import { ToDoListQuery } from '@/apollo/queries';
+import {
+  AddToDoMutation,
+  EditToDoMutation,
+  DeleteToDoMutation,
+  ToggleFinishedMutation,
+} from '@/apollo/mutations';
 import { Item } from '@/types/ToDoList';
 
-const data = [
-  { id: 0, text: 'TODO 1', isFinished: false, isEditing: false },
-  { id: 1, text: 'TODO 2', isFinished: true, isEditing: false },
-  { id: 2, text: 'TODO 3', isFinished: false, isEditing: false },
-];
+export type UseToDoList = ReturnType<typeof useToDoList>;
 
-export interface UseToDoList {
-  toDoList: Item[];
-  addToDo: (text: string) => void;
-  editToDo: (id: number, text: string) => void;
-  deleteToDo: (id: number) => void;
-  toggleFinished: (id: number) => void;
-  toggleEditing: (id: number) => void;
+function updateToDoList(cache: ApolloCache<unknown>, nextToDoList: Item[]) {
+  cache.writeQuery({
+    query: ToDoListQuery,
+    data: { toDoList: nextToDoList },
+  });
 }
 
 export default function useToDoList() {
-  const [toDoList, setToDoList] = useState<Item[]>(data);
-  const idCounterRef = useRef(data.length);
+  const {
+    data: { toDoList },
+    error,
+    loading,
+  } = useQuery<{ toDoList: Item[] }>(ToDoListQuery);
+  const [addToDoMutation] = useMutation(AddToDoMutation);
+  const [editToDoMutation] = useMutation(EditToDoMutation);
+  const [deleteToDoMutation] = useMutation(DeleteToDoMutation);
+  const [toggleFinishedMutation] = useMutation(ToggleFinishedMutation);
 
-  const addToDo = useCallback((text: string) => {
-    if (text.trim().length === 0) return;
+  const addToDo = useCallback(
+    (text: string) => {
+      if (text.trim().length === 0) return;
 
-    setToDoList((prev) => {
-      return prev.concat({
-        id: idCounterRef.current,
-        text,
-        isFinished: false,
-        isEditing: false,
+      addToDoMutation({
+        variables: { text },
+        update(cache, { data: { addToDo: nextToDoList } }) {
+          updateToDoList(cache, nextToDoList);
+        },
       });
-    });
-    idCounterRef.current += 1;
-  }, []);
+    },
+    [addToDoMutation]
+  );
 
-  const editToDo = useCallback((id: number, text: string) => {
-    setToDoList((prev) => {
-      return prev.map((item) => (item.id === id ? { ...item, text } : item));
-    });
-  }, []);
+  const editToDo = useCallback(
+    (id: string, text: string) => {
+      const prevToDoItem = toDoList.find((item) => item.id === id);
 
-  const deleteToDo = useCallback((id: number) => {
-    setToDoList((prev) => prev.filter((item) => item.id !== id));
-  }, []);
+      if (prevToDoItem?.text === text) return;
 
-  const toggleFinished = useCallback((id: number) => {
-    setToDoList((prev) => {
-      return prev.map((item) =>
-        item.id === id ? { ...item, isFinished: !item.isFinished } : item
-      );
-    });
-  }, []);
+      editToDoMutation({
+        variables: { input: { id, text } },
+        update(cache, { data: { editToDo: nextToDoList } }) {
+          updateToDoList(cache, nextToDoList);
+        },
+      });
+    },
+    [toDoList, editToDoMutation]
+  );
 
-  const toggleEditing = useCallback((id: number) => {
-    setToDoList((prev) => {
-      return prev.map((item) =>
-        item.id === id ? { ...item, isEditing: !item.isEditing } : item
-      );
-    });
-  }, []);
+  const deleteToDo = useCallback(
+    (id: string) => {
+      deleteToDoMutation({
+        variables: { id },
+        update(cache, { data: { deleteToDo: nextToDoList } }) {
+          updateToDoList(cache, nextToDoList);
+        },
+      });
+    },
+    [deleteToDoMutation]
+  );
+
+  const toggleFinished = useCallback(
+    (id: string) => {
+      toggleFinishedMutation({
+        variables: { id },
+        update(cache, { data: { toggleFinished: nextToDoList } }) {
+          updateToDoList(cache, nextToDoList);
+        },
+      });
+    },
+    [toggleFinishedMutation]
+  );
 
   return {
-    toDoList,
+    toDoList: toDoList || [],
+    error,
+    loading,
     addToDo,
     editToDo,
     deleteToDo,
     toggleFinished,
-    toggleEditing,
   };
 }

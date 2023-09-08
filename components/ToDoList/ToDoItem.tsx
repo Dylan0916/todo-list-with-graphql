@@ -1,4 +1,4 @@
-import { MouseEvent, FC } from 'react';
+import { MouseEvent, FC, useState, useCallback } from 'react';
 import {
   ListItem,
   ListItemButton,
@@ -6,11 +6,11 @@ import {
   TextField,
 } from '@mui/material';
 
-import { UseToDoList } from '@/hooks/useToDoList';
+import useToDoList from '@/hooks/useToDoList';
 import { Item } from '@/types/ToDoList';
 import Actions from './Actions';
 
-interface Props extends Omit<UseToDoList, 'toDoList' | 'addToDo'> {
+interface Props {
   item: Item;
 }
 
@@ -20,23 +20,24 @@ const stopPropagation = (
   e.stopPropagation();
 };
 
-const ToDoItem: FC<Props> = ({
-  item,
-  editToDo,
-  deleteToDo,
-  toggleFinished,
-  toggleEditing,
-}) => {
+const ToDoItem: FC<Props> = ({ item }) => {
+  const { toggleFinished } = useToDoList();
+  const [text, setText] = useState(item.text);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const toggleEditing = useCallback(() => {
+    setIsEditing((prevIsEditing) => !prevIsEditing);
+  }, []);
+
   return (
     <ListItem
       secondaryAction={
         <Actions
           id={item.id}
           isFinished={item.isFinished}
-          isEditing={item.isEditing}
-          deleteToDo={deleteToDo}
-          toggleFinished={toggleFinished}
+          isEditing={isEditing}
           toggleEditing={toggleEditing}
+          text={text}
         />
       }
       disablePadding
@@ -46,17 +47,17 @@ const ToDoItem: FC<Props> = ({
         sx={{ backgroundColor: '#f4f4f4', borderRadius: '3px' }}
         onClick={() => toggleFinished(item.id)}
       >
-        {item.isEditing ? (
+        {isEditing ? (
           <TextField
             variant="standard"
             fullWidth
-            value={item.text}
+            value={text}
             onClick={stopPropagation}
-            onChange={(e) => editToDo(item.id, e.target.value)}
+            onChange={(e) => setText(e.target.value)}
           />
         ) : (
           <ListItemText
-            primary={item.text}
+            primary={text}
             sx={{
               textDecoration: item.isFinished ? 'line-through' : 'none',
               opacity: item.isFinished ? 0.4 : 1,
