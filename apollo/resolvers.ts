@@ -1,66 +1,65 @@
+import { ToDoList } from '@/sql';
+
 import { Mutations } from './types/mutations';
-
-const data = [
-  { id: '0', text: 'TODO 1', isFinished: false },
-  { id: '1', text: 'TODO 2', isFinished: true },
-  { id: '2', text: 'TODO 3', isFinished: false },
-];
-
-let idCounter = data.length;
 
 const queries = {
   toDoList() {
-    return data;
+    return ToDoList.findAll();
   },
 };
 
 const mutations: Mutations = {
-  addToDo: (_root, { text }) => {
+  addToDo: async (_root, { text }) => {
     if (text.trim().length === 0) return;
 
-    const newToDo = {
-      id: `${idCounter++}`,
-      text,
-      isFinished: false,
-    };
+    try {
+      await ToDoList.create({ text });
 
-    data.push(newToDo);
-
-    return data;
+      return ToDoList.findAll();
+    } catch (error) {
+      return error;
+    }
   },
-  editToDo: (_root, { input }) => {
+  editToDo: async (_root, { input }) => {
     const { id, text } = input;
-    const foundToDo = data.find((datum) => datum.id === id);
 
-    if (!foundToDo) {
-      throw new Error('ToDo not found');
+    try {
+      const foundToDo = await ToDoList.findOne({ where: { id } });
+
+      if (!foundToDo) {
+        throw new Error('ToDo not found');
+      }
+
+      await foundToDo.update({ text });
+
+      return ToDoList.findAll();
+    } catch (error) {
+      return error;
     }
-
-    foundToDo.text = text;
-
-    return data;
   },
-  deleteToDo: (_root, { id }) => {
-    const foundIndex = data.findIndex((datum) => datum.id === id);
+  deleteToDo: async (_root, { id }) => {
+    try {
+      await ToDoList.destroy({ where: { id } });
 
-    if (foundIndex === -1) {
-      throw new Error('ToDo not found');
+      return ToDoList.findAll();
+    } catch (error) {
+      return error;
     }
-
-    data.splice(foundIndex, 1);
-
-    return data;
   },
-  toggleFinished: (_root, { id }) => {
-    const foundToDo = data.find((datum) => datum.id === id);
+  toggleFinished: async (_root, { id }) => {
+    try {
+      const foundToDo = await ToDoList.findOne({ where: { id } });
 
-    if (!foundToDo) {
-      throw new Error('ToDo not found');
+      if (!foundToDo) {
+        throw new Error('ToDo not found');
+      }
+
+      await foundToDo.update({ isFinished: !foundToDo.isFinished });
+
+      return ToDoList.findAll();
+    } catch (error) {
+      return error;
     }
-
-    foundToDo.isFinished = !foundToDo.isFinished;
-
-    return data;
   },
 };
 

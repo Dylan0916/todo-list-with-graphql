@@ -1,0 +1,10 @@
+version: '3'
+services:
+  db:
+    container_name: todo_list
+    image: mysql:5.7.43
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: test123
+      MYSQL_DATABASE: todo_list_DB

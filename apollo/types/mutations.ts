@@ -1,11 +1,11 @@
 import { Item } from '@/types/ToDoList';
 
 export type Mutations = {
-  addToDo: (_root: unknown, { text }: { text: string }) => Item[];
+  addToDo: (_root: unknown, { text }: { text: string }) => Promise<Item[]>;
   editToDo: (
     _root: unknown,
     { input }: { input: { id: string; text: string } }
-  ) => Item[];
-  deleteToDo: (_root: unknown, { id }: { id: string }) => Item[];
-  toggleFinished: (_root: unknown, { id }: { id: string }) => Item[];
+  ) => Promise<Item[]>;
+  deleteToDo: (_root: unknown, { id }: { id: string }) => Promise<Item[]>;
+  toggleFinished: (_root: unknown, { id }: { id: string }) => Promise<Item[]>;
 };
