@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Typography, List } from '@mui/material';
+import { Typography, List, CardContent } from '@mui/material';
 
 import { UseToDoList } from '@/hooks/useToDoList';
 import ToDoItem from './ToDoItem';
@@ -14,7 +14,7 @@ const ToDoList: FC<Props> = ({
   toggleEditing,
 }) => {
   return (
-    <>
+    <CardContent sx={{ '&:last-child': { p: [1, 2] } }}>
       <Typography textAlign="center">LIST OF WORKS TODO:</Typography>
       <List>
         {toDoList.map((item) => (
@@ -28,7 +28,7 @@ const ToDoList: FC<Props> = ({
           />
         ))}
       </List>
-    </>
+    </CardContent>
   );
 };
 

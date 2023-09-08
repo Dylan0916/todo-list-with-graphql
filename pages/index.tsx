@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import Link from 'next/link';
 import { useQuery } from '@apollo/client';
-import { Card, CardContent } from '@mui/material';
+import { Card } from '@mui/material';
 
 import ToDoHeader from '@/components/ToDoHeader';
 import ToDoList from '@/components/ToDoList';
@@ -40,15 +40,13 @@ const Index = () => {
       }}
     >
       <ToDoHeader addToDo={addToDo} />
-      <CardContent sx={{ '&:last-child': { p: [1, 2] } }}>
-        <ToDoList
-          toDoList={toDoList}
-          editToDo={editToDo}
-          deleteToDo={deleteToDo}
-          toggleFinished={toggleFinished}
-          toggleEditing={toggleEditing}
-        />
-      </CardContent>
+      <ToDoList
+        toDoList={toDoList}
+        editToDo={editToDo}
+        deleteToDo={deleteToDo}
+        toggleFinished={toggleFinished}
+        toggleEditing={toggleEditing}
+      />
     </Card>
   );
 };
