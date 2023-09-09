@@ -25,7 +25,8 @@ export default function useToDoList() {
     error,
     loading,
   } = useQuery<{ toDoList: Item[] }>(ToDoListQuery);
-  const [addToDoMutation] = useMutation(AddToDoMutation);
+  const [addToDoMutation, { loading: isAddToDoLoading }] =
+    useMutation(AddToDoMutation);
   const [editToDoMutation] = useMutation(EditToDoMutation);
   const [deleteToDoMutation] = useMutation(DeleteToDoMutation);
   const [toggleFinishedMutation] = useMutation(ToggleFinishedMutation);
@@ -89,6 +90,7 @@ export default function useToDoList() {
     error,
     loading,
     addToDo,
+    isAddToDoLoading,
     editToDo,
     deleteToDo,
     toggleFinished,

@@ -1,11 +1,12 @@
 import { KeyboardEvent, useState } from 'react';
-import { TextField, Box, Button } from '@mui/material';
+import { TextField, Box } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { handleEnterKeyDown } from '@/utils/eventHandlers';
 import useToDoList from '@/hooks/useToDoList';
 
 const AddItemInput = () => {
-  const { addToDo } = useToDoList();
+  const { isAddToDoLoading, addToDo } = useToDoList();
   const [inputValue, setInputValue] = useState('');
 
   const handleSubmitValue = () => {
@@ -28,13 +29,13 @@ const AddItemInput = () => {
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={onKeyDown}
       />
-      <Button
+      <LoadingButton
+        loading={isAddToDoLoading}
         variant="contained"
         sx={{ marginLeft: 1 }}
-        onClick={handleSubmitValue}
       >
         ADD
-      </Button>
+      </LoadingButton>
     </Box>
   );
 };
