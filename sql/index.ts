@@ -14,6 +14,7 @@ if (Sequelize) {
     username: config.username,
     password: config.password,
     storage: ':memory:',
+    dialectOptions: { charset: 'utf8mb4', collate: 'utf8mb4_unicode_ci' },
   });
 
   sequelize.addModels([ToDoList]);
