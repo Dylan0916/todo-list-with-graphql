@@ -11,6 +11,7 @@ import {
 import { Item } from '@/types/ToDoList';
 
 export type UseToDoList = ReturnType<typeof useToDoList>;
+type ToDoListQuery = { toDoList: Item[] };
 
 function updateToDoList(cache: ApolloCache<unknown>, nextToDoList: Item[]) {
   cache.writeQuery({
@@ -20,11 +21,8 @@ function updateToDoList(cache: ApolloCache<unknown>, nextToDoList: Item[]) {
 }
 
 export default function useToDoList() {
-  const {
-    data: { toDoList },
-    error,
-    loading,
-  } = useQuery<{ toDoList: Item[] }>(ToDoListQuery);
+  const { data, error, loading } = useQuery<ToDoListQuery>(ToDoListQuery);
+  const toDoList = data?.toDoList || [];
   const [addToDoMutation, { loading: isAddToDoLoading }] =
     useMutation(AddToDoMutation);
   const [editToDoMutation] = useMutation(EditToDoMutation);
@@ -33,10 +31,12 @@ export default function useToDoList() {
 
   const addToDo = useCallback(
     (text: string) => {
-      if (text.trim().length === 0) return;
+      const trimmedText = text.trim();
+
+      if (trimmedText.length === 0) return;
 
       addToDoMutation({
-        variables: { text },
+        variables: { text: trimmedText },
         update(cache, { data: { addToDo: nextToDoList } }) {
           updateToDoList(cache, nextToDoList);
         },
@@ -86,7 +86,7 @@ export default function useToDoList() {
   );
 
   return {
-    toDoList: toDoList || [],
+    toDoList,
     error,
     loading,
     addToDo,

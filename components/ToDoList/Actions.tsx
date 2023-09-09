@@ -24,7 +24,7 @@ const Actions: FC<Props> = ({
     <>
       <Checkbox
         checked={isFinished}
-        onClick={() => toggleFinished(id)}
+        onChange={() => toggleFinished(id)}
         disabled={isEditing}
       />
       <Button variant="text" disabled={isFinished} onClick={onEidButtonClick}>
