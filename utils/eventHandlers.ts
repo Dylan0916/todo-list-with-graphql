@@ -1,10 +1,4 @@
-import { KeyboardEvent, MouseEvent } from 'react';
-
-export function handleEnterKeyDown(e: KeyboardEvent, callback: () => void) {
-  if (e?.key !== 'Enter') return;
-
-  callback();
-}
+import { MouseEvent } from 'react';
 
 export function stopPropagation(e: MouseEvent) {
   e.stopPropagation();

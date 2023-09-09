@@ -1,12 +1,8 @@
-import { KeyboardEvent, FC, useState, useCallback } from 'react';
-import {
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  TextField,
-} from '@mui/material';
+import { FC, useState, useCallback } from 'react';
+import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 
-import { handleEnterKeyDown, stopPropagation } from '@/utils/eventHandlers';
+import EnterKeyTextField from '@/elements/EnterKeyTextField';
+import { stopPropagation } from '@/utils/eventHandlers';
 import useToDoList from '@/hooks/useToDoList';
 import { Item } from '@/types/ToDoList';
 import Actions from './Actions';
@@ -27,10 +23,6 @@ const ToDoItem: FC<Props> = ({ item }) => {
     setIsEditing((prevIsEditing) => !prevIsEditing);
   }, [item.id, text, editToDo]);
 
-  const onKeyDown = (e: KeyboardEvent) => {
-    handleEnterKeyDown(e, handleEdit);
-  };
-
   return (
     <ListItem
       secondaryAction={
@@ -49,13 +41,13 @@ const ToDoItem: FC<Props> = ({ item }) => {
         onClick={() => toggleFinished(item.id)}
       >
         {isEditing ? (
-          <TextField
+          <EnterKeyTextField
             variant="standard"
             fullWidth
             value={text}
             onClick={stopPropagation}
             onChange={(e) => setText(e.target.value)}
-            onKeyDown={onKeyDown}
+            onEnterKeyDown={handleEdit}
           />
         ) : (
           <ListItemText
