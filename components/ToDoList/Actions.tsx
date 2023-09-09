@@ -6,28 +6,19 @@ import useToDoList from '@/hooks/useToDoList';
 import { Item } from '@/types/ToDoList';
 
 interface Props {
-  text: string;
   id: Item['id'];
   isFinished: Item['isFinished'];
   isEditing: boolean;
-  toggleEditing: () => void;
+  onEidButtonClick: () => void;
 }
 
 const Actions: FC<Props> = ({
-  text,
   id,
   isFinished,
   isEditing,
-  toggleEditing,
+  onEidButtonClick,
 }) => {
-  const { editToDo, deleteToDo, toggleFinished } = useToDoList();
-
-  const onEidButtonClick = () => {
-    if (isEditing) {
-      editToDo(id, text);
-    }
-    toggleEditing();
-  };
+  const { deleteToDo, toggleFinished } = useToDoList();
 
   return (
     <>

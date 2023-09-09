@@ -1,4 +1,4 @@
-import { MouseEvent, FC, useState, useCallback } from 'react';
+import { KeyboardEvent, FC, useState, useCallback } from 'react';
 import {
   ListItem,
   ListItemButton,
@@ -6,6 +6,7 @@ import {
   TextField,
 } from '@mui/material';
 
+import { handleEnterKeyDown, stopPropagation } from '@/utils/eventHandlers';
 import useToDoList from '@/hooks/useToDoList';
 import { Item } from '@/types/ToDoList';
 import Actions from './Actions';
@@ -14,20 +15,21 @@ interface Props {
   item: Item;
 }
 
-const stopPropagation = (
-  e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
-) => {
-  e.stopPropagation();
-};
-
 const ToDoItem: FC<Props> = ({ item }) => {
-  const { toggleFinished } = useToDoList();
+  const { editToDo, toggleFinished } = useToDoList();
   const [text, setText] = useState(item.text);
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEditing = useCallback(() => {
+  const handleEdit = useCallback(() => {
+    if (isEditing) {
+      editToDo(item.id, text);
+    }
     setIsEditing((prevIsEditing) => !prevIsEditing);
-  }, []);
+  }, [item.id, text, editToDo]);
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    handleEnterKeyDown(e, handleEdit);
+  };
 
   return (
     <ListItem
@@ -36,8 +38,7 @@ const ToDoItem: FC<Props> = ({ item }) => {
           id={item.id}
           isFinished={item.isFinished}
           isEditing={isEditing}
-          toggleEditing={toggleEditing}
-          text={text}
+          onEidButtonClick={handleEdit}
         />
       }
       disablePadding
@@ -54,6 +55,7 @@ const ToDoItem: FC<Props> = ({ item }) => {
             value={text}
             onClick={stopPropagation}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={onKeyDown}
           />
         ) : (
           <ListItemText

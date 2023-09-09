@@ -1,6 +1,7 @@
 import { KeyboardEvent, useState } from 'react';
 import { TextField, Box, Button } from '@mui/material';
 
+import { handleEnterKeyDown } from '@/utils/eventHandlers';
 import useToDoList from '@/hooks/useToDoList';
 
 const AddItemInput = () => {
@@ -12,9 +13,8 @@ const AddItemInput = () => {
     setInputValue('');
   };
 
-  const onKeyDown = ({ key }: KeyboardEvent<HTMLDivElement>) => {
-    if (key !== 'Enter') return;
-    handleSubmitValue();
+  const onKeyDown = (e: KeyboardEvent) => {
+    handleEnterKeyDown(e, handleSubmitValue);
   };
 
   return (
