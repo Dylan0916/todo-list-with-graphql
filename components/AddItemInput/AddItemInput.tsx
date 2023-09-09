@@ -29,6 +29,7 @@ const AddItemInput = () => {
         loading={isAddToDoLoading}
         variant="contained"
         sx={{ marginLeft: 1 }}
+        onClick={handleSubmitValue}
       >
         ADD
       </LoadingButton>
