@@ -1,5 +1,6 @@
 import { FC, useState, useCallback } from 'react';
 import { ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 import EnterKeyTextField from '@/elements/EnterKeyTextField';
 import { stopPropagation } from '@/utils/eventHandlers';
@@ -37,7 +38,7 @@ const ToDoItem: FC<Props> = ({ item }) => {
       sx={{ pt: 1, pb: 1, '&>.MuiListItemButton-root': { pr: 20 } }}
     >
       <ListItemButton
-        sx={{ backgroundColor: '#f4f4f4', borderRadius: '3px' }}
+        sx={{ backgroundColor: grey[100], borderRadius: '3px' }}
         onClick={() => toggleFinished(item.id)}
       >
         {isEditing ? (
